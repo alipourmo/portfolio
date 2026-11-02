@@ -7,10 +7,6 @@ import { PortraitMorph } from "./portrait-morph";
 import { FadeIn, ScaleUnblur } from "@/components/ui/motion-primitives";
 import { profile } from "@/lib/content";
 
-/** The photo is shown exactly as supplied (512x531 PNG with transparency). */
-const PORTRAIT_WIDTH = 512;
-const PORTRAIT_HEIGHT = 531;
-
 function HeroMedia(): ReactNode {
   const portrait = profile.portrait;
 
@@ -30,17 +26,16 @@ function HeroMedia(): ReactNode {
     );
   }
 
+  // The photo file in /public is used as supplied; only the frame is styled.
   return (
-    <div className="relative w-full md:max-w-105">
+    <div className="relative aspect-square w-full overflow-hidden rounded-4xl border border-foreground/8 bg-foreground/5 shadow-sm md:max-w-105">
       <Image
         src={portrait.src}
         alt={`${profile.name} portrait`}
-        width={PORTRAIT_WIDTH}
-        height={PORTRAIT_HEIGHT}
+        fill
         priority
-        unoptimized
         sizes="(min-width: 768px) 420px, 100vw"
-        className="h-auto w-full"
+        className="object-cover"
       />
     </div>
   );
