@@ -20,11 +20,10 @@ export const profile = {
   phoneDisplay: "+98 914 096 4611",
   phoneHref: "tel:+989140964611",
   /**
-   * Drop your photo into /public and set the path here (e.g. "/nahid.webp").
-   * Optionally add `hoverSrc` with the same dimensions for the morph effect.
-   * While this is null the hero shows a monogram card instead.
+   * Hero photo, served from /public. Optionally add `hoverSrc` (same
+   * dimensions) for the morph effect. Set to null to show the monogram card.
    */
-  portrait: null as { src: string; hoverSrc?: string } | null,
+  portrait: { src: "/nahid.png" } as { src: string; hoverSrc?: string } | null,
 } as const;
 
 export const stats = [

@@ -7,29 +7,52 @@ import { PortraitMorph } from "./portrait-morph";
 import { FadeIn, ScaleUnblur } from "@/components/ui/motion-primitives";
 import { profile } from "@/lib/content";
 
+/** The photo is shown exactly as supplied (512x531 PNG with transparency). */
+const PORTRAIT_WIDTH = 512;
+const PORTRAIT_HEIGHT = 531;
+
 function HeroMedia(): ReactNode {
   const portrait = profile.portrait;
-  if (!portrait) return <HeroVisual />;
+
+  if (!portrait) {
+    return <FramedMedia><HeroVisual /></FramedMedia>;
+  }
 
   if (portrait.hoverSrc) {
     return (
-      <PortraitMorph
-        srcA={portrait.src}
-        srcB={portrait.hoverSrc}
-        alt={`${profile.name} portrait`}
-      />
+      <FramedMedia>
+        <PortraitMorph
+          srcA={portrait.src}
+          srcB={portrait.hoverSrc}
+          alt={`${profile.name} portrait`}
+        />
+      </FramedMedia>
     );
   }
 
   return (
-    <Image
-      src={portrait.src}
-      alt={`${profile.name} portrait`}
-      fill
-      priority
-      sizes="(min-width: 768px) 420px, 100vw"
-      className="object-cover"
-    />
+    <div className="relative w-full md:max-w-105">
+      <Image
+        src={portrait.src}
+        alt={`${profile.name} portrait`}
+        width={PORTRAIT_WIDTH}
+        height={PORTRAIT_HEIGHT}
+        priority
+        unoptimized
+        sizes="(min-width: 768px) 420px, 100vw"
+        className="h-auto w-full"
+      />
+    </div>
+  );
+}
+
+function FramedMedia({ children }: { children: ReactNode }): ReactNode {
+  return (
+    <div className="relative aspect-square w-full overflow-hidden rounded-4xl border border-foreground/8 bg-background p-1.5 shadow-sm md:max-w-105">
+      <div className="relative h-full w-full overflow-hidden rounded-[1.6rem]">
+        {children}
+      </div>
+    </div>
   );
 }
 
@@ -60,11 +83,7 @@ export function Hero(): ReactNode {
           </FadeIn>
 
           <ScaleUnblur className="flex justify-stretch md:justify-end">
-            <div className="relative aspect-square w-full overflow-hidden rounded-4xl border border-foreground/8 bg-background p-1.5 shadow-sm md:max-w-105">
-              <div className="relative h-full w-full overflow-hidden rounded-[1.6rem]">
-                <HeroMedia />
-              </div>
-            </div>
+            <HeroMedia />
           </ScaleUnblur>
         </div>
       </div>
